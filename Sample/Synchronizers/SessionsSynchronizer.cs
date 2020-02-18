@@ -49,7 +49,7 @@ namespace Сonsumer
 
         public async Task FeedAsync() 
         {
-            using (var state = new ContinuationSync<long?>("sessionsstate"))
+            using (var state = new ContinuationSync<long?>($"sessionsstate-{_options.PId}"))
             {
                 //Получение ленты событий. Если не задать курсор (continuationToken) то потребелние событий будет начинаться с перого события.
                 var feed = _sclm.GetSessionFeed(_options.PId, //Указываем идентификатор презентации
@@ -63,17 +63,12 @@ namespace Сonsumer
                     //Обработка страницы параллельно с ограничением в 10 потоков
                     await page.Result.ThrottleAsync(async session =>
                     {
-                        StringBuilder logResult = new StringBuilder(Environment.NewLine);
-                        logResult.Append($"SESSION: {session.SessionId}, User: {session.UserId}, Count: {session.SlidesCount}, Duration: {session.Duration}");
-                        logResult.Append(Environment.NewLine);
+                        _logger.LogInformation($"SESSION: {session.SessionId}, Data: {new DateTime(session.LocalTicks):dd.MM.yyyy HH:mm:ss}, Slides: {session.SlidesCount}, Duration: {session.Duration}, User: {session.UserId}, Presentation: {session.PresentationId}, Address: {session.Address}");
 
                         //Получение визита по идентификатору сессии. Визит включает: сессию, список слайдов и собранные в один объект кастомные события.
                         var visit = await _sclm.GetVisit<PresentationData>(session.SessionId);
                         var slides = visit.Slides; // стэк показа слайдов
                         PresentationData data = visit.CustomEvents; // данные из презентации агрегированные в один обхект
-
-                        logResult.Append(JsonConvert.SerializeObject(visit, Formatting.Indented));
-                        _logger.LogInformation(logResult.ToString());
 
                         visit.SaveTo("Data/Sessions"); // сохранение в хранилище)) 
                     }, 10);

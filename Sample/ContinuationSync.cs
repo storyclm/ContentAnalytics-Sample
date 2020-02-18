@@ -7,10 +7,19 @@ namespace Сonsumer
 {
     public class ContinuationSync<T> : IDisposable
     {
+
+        const string PATH = "States";
         readonly string _name;
 
-        public ContinuationSync(string name) =>
-            _name = name ?? throw new ArgumentNullException(nameof(name));
+        public ContinuationSync(string name)
+        {
+            if(string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
+
+            if (!Directory.Exists(PATH))
+                Directory.CreateDirectory(PATH);
+
+            _name = Path.Combine(PATH, name);
+        }
 
         T _token { get; set; }
 
