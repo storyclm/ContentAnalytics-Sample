@@ -3,15 +3,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyVersion>1.0.0.24</AssemblyVersion>
-    <FileVersion>1.0.0.24</FileVersion>
+    <AssemblyVersion>1.0.0.28</AssemblyVersion>
+    <FileVersion>1.0.0.28</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Breffi.Story.Ocm" Version="0.2.1" />
-    <PackageReference Include="Breffi.Story.SDK.CLMAnalitycs" Version="2.4.0" />
+    <PackageReference Include="Breffi.Story.SDK.CLMAnalitycs" Version="2.4.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.1" />
@@ -20,7 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="StoryCLM.SDK.Authentication" Version="2.1.0" />
+    <PackageReference Include="StoryCLM.SDK.Authentication" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
