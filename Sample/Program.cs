@@ -8,6 +8,8 @@ using StoryCLM.SDK.Authentication;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Сonsumer.Options;
+using Сonsumer.Synchronizers;
 
 namespace Сonsumer
 {
