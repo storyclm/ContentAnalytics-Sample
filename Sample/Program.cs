@@ -1,21 +1,21 @@
-﻿using AutoMapper;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StoryCLM.SDK;
 using StoryCLM.SDK.Authentication;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Сonsumer.Options;
 using Сonsumer.Synchronizers;
 
 namespace Сonsumer
 {
-    class Program
+    public class Program
     {
-        static IConfigurationRoot Configuration;
+        private static IConfigurationRoot _configuration;
 
         private static IServiceCollection ConfigureServices()
         {
@@ -25,26 +25,27 @@ namespace Сonsumer
             services.AddLogging(s => s.AddConsole());
 
             services.AddOptions();
-            services.Configure<StoryOptions>(Configuration.GetSection("Story"));
-            services.Configure<SyncOptions>(Configuration.GetSection("Sync"));
+            services.Configure<StoryOptions>(_configuration.GetSection("Story"));
+            services.Configure<SyncOptions>(_configuration.GetSection("Sync"));
 
             services.AddSingleton(s =>
             {
                 var options = s.GetService<IOptionsSnapshot<StoryOptions>>().Value;
-                SCLM sclm = new SCLM();
+                var sclm = new SCLM();
                 sclm.SetEndpoint("content", options.AnalyticsEndpoint);
                 sclm.SetEndpoint("auth", options.AuthEndpoint);
-                var token = sclm.AuthAsync(options.Client, options.Secret).GetAwaiter().GetResult();
+                sclm.AuthAsync(options.Client, options.Secret).GetAwaiter().GetResult();
                 return sclm;
             });
 
             services.AddTransient<SessionsSynchronizer>();
+            services.AddTransient<SlidesSynchronizer>();
             return services;
         }
 
-        static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Configuration = new ConfigurationBuilder()
+            _configuration = new ConfigurationBuilder()
                 .SetBasePath(Path.Combine(AppContext.BaseDirectory))
                 .AddJsonFile("appsettings.json", true)
                 .AddEnvironmentVariables()
@@ -53,7 +54,15 @@ namespace Сonsumer
 
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
-            await serviceProvider.GetService<SessionsSynchronizer>().RunAsync();
+
+            var syncOptions = serviceProvider.GetService<IOptionsSnapshot<SyncOptions>>().Value;
+            SynchronizerBase synchronizer = syncOptions.Mode switch
+            {
+                "sessions" => serviceProvider.GetService<SessionsSynchronizer>(),
+                "slides" => serviceProvider.GetService<SlidesSynchronizer>(),
+                _ => throw new ArgumentException(nameof(syncOptions.Mode))
+            };
+            await synchronizer.RunAsync();
         }
     }
 }
