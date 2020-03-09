@@ -38,6 +38,7 @@ namespace Сonsumer
                 return sclm;
             });
 
+            services.AddTransient<CustomEventsSynchronizer>();
             services.AddTransient<SessionsSynchronizer>();
             services.AddTransient<SlidesSynchronizer>();
             return services;
@@ -58,6 +59,7 @@ namespace Сonsumer
             var syncOptions = serviceProvider.GetService<IOptionsSnapshot<SyncOptions>>().Value;
             SynchronizerBase synchronizer = syncOptions.Mode switch
             {
+                "cs" => serviceProvider.GetService<CustomEventsSynchronizer>(),
                 "sessions" => serviceProvider.GetService<SessionsSynchronizer>(),
                 "slides" => serviceProvider.GetService<SlidesSynchronizer>(),
                 _ => throw new ArgumentException(nameof(syncOptions.Mode))
