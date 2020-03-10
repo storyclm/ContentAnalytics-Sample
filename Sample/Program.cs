@@ -39,6 +39,7 @@ namespace Сonsumer
             });
 
             services.AddTransient<CustomEventsSynchronizer>();
+            services.AddTransient<KpisSynchronizer>();
             services.AddTransient<SessionsSynchronizer>();
             services.AddTransient<SlidesSynchronizer>();
             return services;
@@ -57,9 +58,10 @@ namespace Сonsumer
             var serviceProvider = services.BuildServiceProvider();
 
             var syncOptions = serviceProvider.GetService<IOptionsSnapshot<SyncOptions>>().Value;
-            SynchronizerBase synchronizer = syncOptions.Mode switch
+            SynchronizerBase synchronizer = syncOptions.Mode.ToLower() switch
             {
                 "cs" => serviceProvider.GetService<CustomEventsSynchronizer>(),
+                "kpis" => serviceProvider.GetService<KpisSynchronizer>(),
                 "sessions" => serviceProvider.GetService<SessionsSynchronizer>(),
                 "slides" => serviceProvider.GetService<SlidesSynchronizer>(),
                 _ => throw new ArgumentException(nameof(syncOptions.Mode))
