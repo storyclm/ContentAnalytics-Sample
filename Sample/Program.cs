@@ -39,6 +39,7 @@ namespace Сonsumer
             });
 
             services.AddTransient<CustomEventsSynchronizer>();
+            services.AddTransient<KpipSynchronizer>();
             services.AddTransient<KpisSynchronizer>();
             services.AddTransient<SessionsSynchronizer>();
             services.AddTransient<SlidesSynchronizer>();
@@ -61,6 +62,7 @@ namespace Сonsumer
             SynchronizerBase synchronizer = syncOptions.Mode.ToLower() switch
             {
                 "cs" => serviceProvider.GetService<CustomEventsSynchronizer>(),
+                "kpip" => serviceProvider.GetService<KpipSynchronizer>(),
                 "kpis" => serviceProvider.GetService<KpisSynchronizer>(),
                 "sessions" => serviceProvider.GetService<SessionsSynchronizer>(),
                 "slides" => serviceProvider.GetService<SlidesSynchronizer>(),

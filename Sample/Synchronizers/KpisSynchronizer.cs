@@ -25,7 +25,7 @@ namespace Сonsumer.Synchronizers
             var kpisEvent = await Sclm.GetKPIS(int.Parse(Options.PId), Options.UId, SetSections(Options.Sections));
 
             Logger.LogInformation(
-                $"KPIs: {kpisEvent.Id}, Data: {kpisEvent.Date:dd.MM.yyyy HH:mm:ss}, PresentationId: {kpisEvent.PresentationId}, SlideId: {kpisEvent.SlideId}, User: {kpisEvent.UserId}");
+                $"KPIS: {kpisEvent.Id}, Data: {kpisEvent.Date:dd.MM.yyyy HH:mm:ss}, PresentationId: {kpisEvent.PresentationId}, SlideId: {kpisEvent.SlideId}, User: {kpisEvent.UserId}");
 
             kpisEvent.SaveTo("Data/KPISs");
         }
