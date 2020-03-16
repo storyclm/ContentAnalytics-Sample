@@ -25,9 +25,7 @@ namespace Сonsumer.Synchronizers
             var kpipEvent = await Sclm.GetKPIP(int.Parse(Options.PId), Options.UId, SetSections(Options.Sections));
 
             Logger.LogInformation(
-                $"KPIP: {kpipEvent.Id}, Data: {kpipEvent.Date:dd.MM.yyyy HH:mm:ss}, PresentationId: {kpipEvent.PresentationId}, User: {kpipEvent.UserId}");
-
-            kpipEvent.SaveTo("Data/KPIPs");
+                $"KPIP. DurationStandartDeviation: {kpipEvent.DurationStandartDeviation:F}, DurationStandartDeviation: {kpipEvent.DurationStandartDeviation:F}, DurationMean: {kpipEvent.DurationMean}, SlidesCountStandartDeviation: {kpipEvent.SlidesCountStandartDeviation}");
         }
     }
 }
