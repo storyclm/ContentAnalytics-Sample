@@ -7,9 +7,9 @@ using Сonsumer.Options;
 
 namespace Сonsumer.Synchronizers
 {
-    public class KpipSynchronizer : SynchronizerBase
+    public class KpipSynchronizer: SynchronizerBase
     {
-        public KpipSynchronizer(SCLM sclm, IOptionsSnapshot<SyncOptions> options, ILogger<KpipSynchronizer> logger) :
+        public KpipSynchronizer(SCLM sclm, IOptionsSnapshot<SyncOptions> options, ILogger<KpipSynchronizer> logger):
             base(sclm, options, logger)
         {
         }
@@ -22,7 +22,7 @@ namespace Сonsumer.Synchronizers
 
         internal override async Task FeedAsync()
         {
-            var kpipEvent = await Sclm.GetKPIP(int.Parse(Options.PId), Options.UId, SetSections(Options.Sections));
+            var kpipEvent = await Sclm.GetKPIP(Options.PId, Options.UId, SetSections(Options.Sections));
 
             Logger.LogInformation(
                 $"KPIP. DurationStandartDeviation: {kpipEvent.DurationStandartDeviation:F}, DurationStandartDeviation: {kpipEvent.DurationStandartDeviation:F}, DurationMean: {kpipEvent.DurationMean}, SlidesCountStandartDeviation: {kpipEvent.SlidesCountStandartDeviation}");
