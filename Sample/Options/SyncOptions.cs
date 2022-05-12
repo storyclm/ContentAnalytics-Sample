@@ -1,29 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Сonsumer
+﻿namespace Сonsumer.Options
 {
     public class SyncOptions
     {
-
-
         public string Mode { get; set; }
 
         /// <summary>
-        /// Идентификатор презентации
+        ///     Идентификатор презентации
         /// </summary>
         public string PId { get; set; }
 
         /// <summary>
-        /// Идентификатор пользователя
+        ///     Идентификатор пользователя
         /// </summary>
         public string UId { get; set; }
 
         /// <summary>
-        /// Секция
+        ///     Секция
         /// </summary>
-        public string S { get; set; }
-
+        public string Sections { get; set; }
     }
 }
