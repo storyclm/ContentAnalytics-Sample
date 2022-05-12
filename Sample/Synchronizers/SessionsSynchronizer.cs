@@ -49,7 +49,7 @@ namespace Сonsumer.Synchronizers
                         var data = visit.CustomEvents; // данные из презентации агрегированные в один обхект
 
                         visit.SaveTo("Data/Sessions"); // сохранение в хранилище)) 
-                    }, 10);
+                    }, 1); // сколько одновременно обрабатывать
                     state.Token = page.ContinuationToken; // сохранение токена
                 }
             }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using StoryCLM.SDK;
-using StoryCLM.SDK.Authentication;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using Сonsumer.Options;
 using Сonsumer.Synchronizers;
 
@@ -33,8 +31,6 @@ namespace Сonsumer
                 var options = s.GetService<IOptionsSnapshot<StoryOptions>>().Value;
                 var sclm = new SCLM();
                 sclm.SetEndpoint("content", options.AnalyticsEndpoint);
-                sclm.SetEndpoint("auth", options.AuthEndpoint);
-                sclm.AuthAsync(options.Client, options.Secret).GetAwaiter().GetResult();
                 return sclm;
             });
 
